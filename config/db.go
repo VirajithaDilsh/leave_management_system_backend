@@ -12,14 +12,14 @@ var DB *gorm.DB
 
 func ConnectDB() {
 	dsn := fmt.Sprintf(
-	"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
-	"localhost",        // DB_HOST
-	"postgres",         // DB_USER
-	"2328687",    // DB_PASSWORD
-	"leave_management", // DB_NAME
-	"5432",             // DB_PORT
-	"disable",          // DB_SSLMODE
-)
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+		"localhost",        // DB_HOST
+		"postgres",         // DB_USER
+		"2328687",          // DB_PASSWORD
+		"leave_management", // DB_NAME
+		"5432",             // DB_PORT
+		"disable",          // DB_SSLMODE
+	)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
