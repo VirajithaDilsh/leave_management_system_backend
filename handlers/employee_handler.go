@@ -79,16 +79,34 @@ func DeleteEmployee(c *gin.Context) {
 
 	var user models.User
 	if err := config.DB.First(&user, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Employee not found"})
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Employee not found",
+		})
 		return
 	}
 
+	// delete related leave requests first
+	if err := config.DB.
+		Where("employee_id = ?", user.ID).
+		Delete(&models.LeaveRequest{}).Error; err != nil {
+
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "Failed to delete leave requests",
+			"details": err.Error(),
+		})
+		return
+	}
+
+	// delete user
 	if err := config.DB.Delete(&user).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete employee"})
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "Failed to delete employee",
+			"details": err.Error(),
+		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Employee deleted successfully",
+		"message": "Employee and leave records deleted",
 	})
 }

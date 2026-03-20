@@ -32,7 +32,7 @@ func main() {
 			Email:    "admin@test.com",
 			Password: hashedPassword,
 			Role:     "admin",
-			JobTitle: "HR",
+			JobTitle: "HR Manager",
 		}
 
 		config.DB.Create(&admin)
